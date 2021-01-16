@@ -25,16 +25,10 @@ app.get('/inbound', (req, res) => {
                 "endpoint": [
                   {
                     "type": "websocket",
-                    "uri": "ws://7f1c7b3c0b01.ngrok.io/ws",
+                    "uri": "ws://9e8465c91517.ngrok.io/ws",
                     "content-type": "audio/l16;rate=16000",
                     "headers": {
-                        "name": "J Doe",
-                        "age": 40,
-                        "address": {
-                            "line_1": "Apartment 14",
-                            "line_2": "123 Example Street",
-                            "city": "New York City"
-                        }
+                        "clientType": "vonage"
                     }
                   }
                 ]
@@ -45,6 +39,13 @@ app.get('/inbound', (req, res) => {
 
 app.post('/events', (req, res) => {
     console.log(req.body)
+    if (req.status == 'completed') {
+        wss.clients.forEach(function each(client) {
+            if (client.clientType == 'vonage') {
+                client.close()
+            }
+        })
+    }
     res.send('200');
 });
 
@@ -61,10 +62,10 @@ wss.on('connection', (ws) => {
             message = JSON.parse(message);
             console.log(message);
         } catch {
-            console.log('[server] message is not parsable');
+            console.log('[server] vonage audio data');
             wss.clients.forEach(function each(client) {
-                if (client.clientType == 'user' && client.readyState === WebSocket.OPEN) {
-                    console.log('sending smth');
+                if (client.clientType == 'ibm' && client.readyState === WebSocket.OPEN) {
+                    console.log('sending audio to ibm');
                     client.send(message);
                 }
             });
@@ -73,7 +74,7 @@ wss.on('connection', (ws) => {
 
         if (message.clientType) {
             ws.clientType = message.clientType;
-            console.log('setting client user');
+            console.log('setting client user ' + message.clientType);
         } else {
             wss.clients.forEach(function each(client) {
                 if (client.clientType == 'user' && client.readyState === WebSocket.OPEN) {

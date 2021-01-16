@@ -16,7 +16,7 @@ const ncco = [
             {
                 "type": "phone",
                 "number": "16475580588",
-                "dtmfAnswer": 'ppppppppp9740197468#pppppppp#'
+                "dtmfAnswer": 'ppppp9740197468#ppppp#'
             }
         ],
         "machineDetection": "continue"
@@ -25,6 +25,24 @@ const ncco = [
         "action": "talk",
         "voiceName": "Kendra",
         "text": "This is a call from Vonage. We will be recording this meeting."
+    }, {
+        "action": "connect",
+        "endpoint": [
+          {
+            "type": "websocket",
+            "uri": "ws://9e8465c91517.ngrok.io/ws",
+            "content-type": "audio/l16;rate=16000",
+            "headers": {
+                "name": "J Doe",
+                "age": 40,
+                "address": {
+                    "line_1": "Apartment 14",
+                    "line_2": "123 Example Street",
+                    "city": "New York City"
+                }
+            }
+          }
+        ]
     }
 ];
 
