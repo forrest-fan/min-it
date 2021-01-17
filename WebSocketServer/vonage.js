@@ -9,7 +9,7 @@ const vonage = new Vonage({
 });
 
 // NCCO = Nexmo Call Control Object
-const ncco = [
+const ncco2 = [
     {
         "action": "connect",
         "endpoint": [
@@ -30,16 +30,29 @@ const ncco = [
         "endpoint": [
           {
             "type": "websocket",
-            "uri": "ws://9e8465c91517.ngrok.io/ws",
+            "uri": "ws://736254919d44.ngrok.io/ws",
             "content-type": "audio/l16;rate=16000",
             "headers": {
-                "name": "J Doe",
-                "age": 40,
-                "address": {
-                    "line_1": "Apartment 14",
-                    "line_2": "123 Example Street",
-                    "city": "New York City"
-                }
+                'clientType': 'vonage'
+            }
+          }
+        ]
+    }
+];
+const ncco = [
+    {
+        "action": "talk",
+        "voiceName": "Kendra",
+        "text": "This is a call from Vonage. We will be recording this meeting."
+    }, {
+        "action": "connect",
+        "endpoint": [
+          {
+            "type": "websocket",
+            "uri": "ws://736254919d44.ngrok.io/ws",
+            "content-type": "audio/l16;rate=16000",
+            "headers": {
+                'clientType': 'vonage'
             }
           }
         ]

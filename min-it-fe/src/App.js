@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import { React, useEffect, useState } from 'react';
+import { Router, Redirect, Route } from 'react-router-dom';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
 import './App.css';
+import Header from './Components/Header/Header';
+import Doc from './Components/Doc/Doc';
+import Home from './Components/Home/Home';
+import history from './history';
+
+const client = new W3CWebSocket('ws://736254919d44.ngrok.io/ws');
+
 
 function App() {
+  const [notes, setNotes] = useState('');
+
+  useEffect(() => {
+    if (notes !== '') {
+      client.send(JSON.stringify({'newText': notes}));
+    }
+  });
+
+  client.onopen = () => {
+    console.log('connected to socket');
+    client.send(JSON.stringify({'clientType': 'front-end'}));
+  }
+  
+  client.onmessage = (message) => {
+    console.log(message.data);
+    setNotes(message.data);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router history={ history }>
+      <Header />
+      <Route exact path='/' render={(props) => <Home {...props} ws={client} />} />
+      <Route path='/docs/*' render={(props) => <Doc {...props} ws={client} notes={notes} handleChange={setNotes}/>} />
+    </Router>
   );
 }
 
 export default App;
+
