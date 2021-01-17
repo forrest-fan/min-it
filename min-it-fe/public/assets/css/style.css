@@ -1661,6 +1661,7 @@ section {
 #docContainer textarea {
   width: 100%;
   min-height:1000px;
-  padding: 40px;
+  padding: 60px;
+  line-height: 1.3;
   font-size: 17px;
 }

@@ -26,7 +26,7 @@ function Home(props) {
                                         
                                         // Send meeting ID to WSS
                                         console.log(id);
-                                        props.ws.send(JSON.stringify({'clientType': 'meeting-creator'}));
+                                        props.ws.send(JSON.stringify({'clientType': 'meeting-creator', 'meetingID': id}));
 
                                         // Generate doc key
                                         let docKey = '';
