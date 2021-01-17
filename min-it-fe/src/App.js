@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { Router, Redirect, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import './App.css';
@@ -8,8 +8,8 @@ import Doc from './Components/Doc/Doc';
 import Home from './Components/Home/Home';
 import history from './history';
 
+// Connect to websocket server
 const client = new W3CWebSocket('ws://736254919d44.ngrok.io/ws');
-
 
 function App() {
   const [notes, setNotes] = useState('');
@@ -26,9 +26,9 @@ function App() {
   }
   
   client.onmessage = (message) => {
-    console.log(message.data);
     setNotes(message.data);
   }
+  
   return (
     <Router history={ history }>
       <Header />
